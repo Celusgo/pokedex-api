@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity("users")
+@Entity("user")
 export default class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({unique: true})
+  @Column()
   email: string;
 
   @Column()

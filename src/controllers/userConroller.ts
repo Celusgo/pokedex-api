@@ -26,5 +26,5 @@ export async function singIn (req: Request, res: Response) {
   if(!checkPassword) return res.sendStatus(401);
 
   const token = await userService.signIn(checkExistingEmail.id);
-  res.send({token});
+  res.status(200).send({token});
 };
