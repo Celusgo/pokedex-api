@@ -6,7 +6,7 @@ export async function getAllPokemons(req: Request, res: Response){
 
     const pokemonList = await pokemonServices.listPokemons(trainerId);
     
-    res.send(pokemonList);
+    res.status(200).send(pokemonList);
 };
 
 export async function addToMyPokemons(req: Request, res: Response){

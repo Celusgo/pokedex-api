@@ -14,7 +14,6 @@ export async function listPokemons(trainerId: number){
       });
 
     const allPokemons: PokeBoolean[] = await getRepository(Pokemons).find();
-    console.log(userPokemons);
     for(let i = 0; i < allPokemons.length; i++){
         if(userPokemons.length === 0){
             allPokemons[i].inMyPokemons = false;
