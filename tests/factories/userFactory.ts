@@ -1,14 +1,18 @@
 import { getRepository } from "typeorm";
-
 import User from "../../src/entities/User";
+import bcrypt from "bcrypt";
 
-export async function createUser () {
-  const user = await getRepository(User).create({
-    email: "email@email.com",
-    password: "123456"
+export function newTrainer (email: string|number , password: string|number, confirmPassword: string|number) {
+  return({
+    email,
+    password,
+    confirmPassword
+  })
+};
+
+export async function insertTrainer (email: string, password: string) {
+  await getRepository(User).insert({
+    email: email,
+    password: bcrypt.hashSync(password, 12)
   });
-
-  await getRepository(User).save(user);
-
-  return user;
 }

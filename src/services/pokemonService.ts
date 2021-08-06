@@ -2,38 +2,36 @@ import { getRepository } from "typeorm";
 import Pokemons from "../entities/Pokemons";
 import UserPokemon from "../entities/UserPokemon";
 
-interface AddUser extends Pokemons{
-    inMyPokemons: boolean
-}
+interface PokeBoolean extends Pokemons {
+    inMyPokemons?: boolean
+};
 
-export async function listPokemons(id: number){
-    const userPokemons = await getRepository(UserPokemon).find({ 
+export async function listPokemons(trainerId: number){
+    const userPokemons: UserPokemon[] = await getRepository(UserPokemon).find({ 
         where: {
-          trainerId: id 
+          trainerId: trainerId 
         }
       });
-    let pokemons: any[] = await getRepository(Pokemons).find();
 
-    for(let i = 0; i < pokemons.length; i++){
-        if(!userPokemons[0]){
-            pokemons[i].inMyPokemons = false;
+    const allPokemons: PokeBoolean[] = await getRepository(Pokemons).find();
+    console.log(userPokemons);
+    for(let i = 0; i < allPokemons.length; i++){
+        if(userPokemons.length === 0){
+            allPokemons[i].inMyPokemons = false;
         }
         else{
-            const pokemonId = pokemons[i].id;
+            allPokemons[i].inMyPokemons = false;
             for(let j = 0; j < userPokemons.length; j++){
-                if(userPokemons[j].pokemonId === pokemonId){
-                    pokemons[i].inMyPokemons = true;
-                }
-                else{
-                    pokemons[i].inMyPokemons = false;
+                if(userPokemons[j].pokemonId === allPokemons[i].id){
+                    allPokemons[i].inMyPokemons = true;
                 }
             }
         }
     }
-    return pokemons;
-}
+    return allPokemons;
+};
 
-export async function addUserPokemons(trainerId: number, pokemonId: number){
+export async function addToList(trainerId: number, pokemonId: number){
     const userPokemons = await getRepository(UserPokemon).find({ 
         where: {
           trainerId: trainerId,
@@ -51,9 +49,9 @@ export async function addUserPokemons(trainerId: number, pokemonId: number){
     });
 
     return true;
-}
+};
 
-export async function removeUserPokemons(trainerId: number, pokemonId: number){
+export async function removeFromList(trainerId: number, pokemonId: number){
     const userPokemons = await getRepository(UserPokemon).find({ 
         where: {
           trainerId: trainerId,
@@ -61,11 +59,11 @@ export async function removeUserPokemons(trainerId: number, pokemonId: number){
         }
     });
 
-    const exists = userPokemons.find(n => n.pokemonId === pokemonId);
+    const exists = userPokemons.find(item => item.pokemonId === pokemonId);
 
     if (!exists) return false;
 
     await getRepository(UserPokemon).delete({pokemonId: pokemonId})
 
     return true;
-}
+};
