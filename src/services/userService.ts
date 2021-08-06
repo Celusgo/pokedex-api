@@ -1,12 +1,41 @@
-import { Request, Response } from "express";
 import { getRepository } from "typeorm";
-
+import { v4 as uuid } from "uuid";
+import bcrypt from "bcrypt";
 import User from "../entities/User";
+import Session from "../entities/Sessions";
+import { userSchema } from "../schemas/userSchema";
 
-export async function getUsers () {
-  const users = await getRepository(User).find({
-    select: ["id", "email"]
+export async function signUp (email: string, password: string, confirmPassword: string) {
+  const information = userSchema.validate({
+   email,
+   password,
+   confirmPassword
+ })
+
+ if (information.error) return false;
+
+ await getRepository(User).insert({email, password: bcrypt.hashSync(password,12)});
+ 
+ return true;
+};
+
+export async function findUserByEmail (email: string) {
+  const user = await getRepository(User).findOne({
+    where: { 
+      email: email
+    }
   });
+  return user;
+};
+
+export async function signIn (id: number) {
+  const token = uuid();
+ 
+  await getRepository(Session).insert({userId: id, token});
   
-  return users;
-}
+  return token;
+};
+
+export async function checkIfPasswordsMatch (hashedPassword: string, password: string) {
+ return bcrypt.compareSync(password, hashedPassword);
+};
