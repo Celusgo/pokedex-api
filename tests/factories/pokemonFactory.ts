@@ -29,4 +29,4 @@ export async function createNewSessionWithToken() {
 export async function findRelation(){
     const relation = await getRepository(UserPokemon).find();
     return relation;
-}
+};
