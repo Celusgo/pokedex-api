@@ -13,7 +13,7 @@ export async function checkToken(req: Request, res: Response, next: NextFunction
       return res.sendStatus(401);
     }
     else{
-      res.locals.id = validSession.userId;  
+      res.locals.id = validSession.trainerId;  
       next();
     }
   }

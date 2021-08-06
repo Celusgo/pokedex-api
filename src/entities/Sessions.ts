@@ -10,8 +10,5 @@ export default class Session {
   token: string;
 
   @Column()
-  userId: number;
-
-  @ManyToOne(()=> User)
-  user: User;
+  trainerId: number;
 }

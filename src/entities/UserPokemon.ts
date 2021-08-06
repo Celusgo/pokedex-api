@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import Pokemons from "./Pokemons";
 
-@Entity("user_pokemon")
+@Entity("trainer_pokemon")
 export default class UserPokemon {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  userId: number;
+  trainerId: number;
 
   @Column()
   pokemonId: number;

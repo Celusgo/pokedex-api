@@ -20,18 +20,18 @@ export async function signUp (email: string, password: string, confirmPassword: 
 };
 
 export async function findUserByEmail (email: string) {
-  const user = await getRepository(User).findOne({
+  const trainer = await getRepository(User).findOne({
     where: { 
       email: email
     }
   });
-  return user;
+  return trainer;
 };
 
 export async function signIn (id: number) {
   const token = uuid();
  
-  await getRepository(Session).insert({userId: id, token});
+  await getRepository(Session).insert({trainerId: id, token});
   
   return token;
 };

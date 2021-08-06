@@ -9,7 +9,7 @@ interface AddUser extends Pokemons{
 export async function listPokemons(id: number){
     const userPokemons = await getRepository(UserPokemon).find({ 
         where: {
-          userId: id 
+          trainerId: id 
         }
       });
     let pokemons: any[] = await getRepository(Pokemons).find();
@@ -31,4 +31,41 @@ export async function listPokemons(id: number){
         }
     }
     return pokemons;
+}
+
+export async function addUserPokemons(trainerId: number, pokemonId: number){
+    const userPokemons = await getRepository(UserPokemon).find({ 
+        where: {
+          trainerId: trainerId,
+          pokemonId: pokemonId
+        }
+    });
+
+    const exists = userPokemons.find(item => item.pokemonId === pokemonId);
+
+    if (exists) return false;
+
+    await getRepository(UserPokemon).insert({
+        trainerId: trainerId,
+        pokemonId: pokemonId
+    });
+
+    return true;
+}
+
+export async function removeUserPokemons(trainerId: number, pokemonId: number){
+    const userPokemons = await getRepository(UserPokemon).find({ 
+        where: {
+          trainerId: trainerId,
+          pokemonId: pokemonId
+        }
+    });
+
+    const exists = userPokemons.find(n => n.pokemonId === pokemonId);
+
+    if (!exists) return false;
+
+    await getRepository(UserPokemon).delete({pokemonId: pokemonId})
+
+    return true;
 }
