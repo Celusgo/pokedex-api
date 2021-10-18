@@ -11,7 +11,7 @@ export async function getAllPokemons(req: Request, res: Response){
 
 export async function addToMyPokemons(req: Request, res: Response){
     const trainerId: number = res.locals.id;
-    const pokemonId = req.params.id;
+    const pokemonId: string = req.params.id;
 
     const findPokemon = await pokemonServices.addToList(trainerId, parseInt(pokemonId));
     if (findPokemon === false) return res.sendStatus(401);
@@ -21,7 +21,7 @@ export async function addToMyPokemons(req: Request, res: Response){
 
 export async function RemoveFromMyPokemons(req: Request, res: Response){
     const trainerId: number = res.locals.id;
-    const pokemonId = req.params.id;
+    const pokemonId: string = req.params.id;
 
     const findPokemon = await pokemonServices.removeFromList(trainerId, parseInt(pokemonId));
     if (findPokemon === false) return res.sendStatus(401);
